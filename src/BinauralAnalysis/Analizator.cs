@@ -43,7 +43,6 @@ namespace BinauralAnalysis
                 wav.Right[j] = buffer[i+1];
             }
             
-            
         }
 
         /// <summary>

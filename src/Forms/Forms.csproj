@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileType.cs" />
     <Compile Include="FFTGraphicForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,12 +71,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="root.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="root.Designer.cs">
-      <DependentUpon>root.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="FFTGraphicForm.resx">
       <DependentUpon>FFTGraphicForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,9 +89,6 @@
     <EmbeddedResource Include="ResultForm.resx">
       <DependentUpon>ResultForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="root.resx">
-      <DependentUpon>root.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -109,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinauralAnalysis\BinauralAnalysis.csproj">
+      <Project>{cad3ba06-4cae-4ff8-be3c-10424e1b2cc9}</Project>
+      <Name>BinauralAnalysis</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

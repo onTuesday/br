@@ -11,7 +11,7 @@ namespace BinauralAnalysis
     /// </summary>
     public struct WavFile
     {
-        public string Name { get; }
+        public string Name { get; set; }
         public double[] Left { get; set; }
         public double[] Right { get; set; }
         public double[] FFTdata { get; set; }
