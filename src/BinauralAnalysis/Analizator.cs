@@ -24,38 +24,26 @@ namespace BinauralAnalysis
                 throw new NotStereoException();
 
             int bitsPerSample = reader.WaveFormat.BitsPerSample;
-            wav.Length = (int)( ((reader.Length * 8) / bitsPerSample) / (reader.WaveFormat.SampleRate * 2));
+            wav.Length = (int)(((reader.Length * 8) / bitsPerSample) / (reader.WaveFormat.SampleRate * 2));
             wav.Samplerate = reader.WaveFormat.SampleRate;
+            int sampleCount = (int)((reader.Length * 8) / reader.WaveFormat.BitsPerSample);
 
-            byte[] buffer = new byte[reader.Length];
-            reader.Read(buffer, 0, (int)reader.Length);
-            Console.WriteLine(reader.WaveFormat.BitsPerSample);
+            //Запись в массив
+            reader.ToSampleProvider();
+            float[] buffer = new float[(reader.Length * 8) / reader.WaveFormat.BitsPerSample];
 
-            //Конвертация битовых сэмплов в double и запись 
-            wav.Left = new double[(reader.Length * 8) / bitsPerSample / 2];
-            wav.Right = new double[(reader.Length * 8) / bitsPerSample / 2];
-            bool left = true;
-            for(int i = 0; i < reader.Length; i+= bitsPerSample )
+            //Запись в структуру по левому и правому каналу
+            reader.Read(buffer, 0, sampleCount);
+            wav.Left = new double[sampleCount];
+            wav.Right = new double[sampleCount];
+
+            for (int i = 0, j = 0; i < sampleCount; i+=2, ++j)
             {
-                int sampleIndex = 0;
-                int intSample = buffer[i];
-                for ( int j = i + 1; j < i + reader.WaveFormat.BitsPerSample; ++j)
-                {
-                    intSample = (intSample << bitsPerSample) | buffer[j];
-                }
-
-                if (left)
-                {
-                    wav.Left[sampleIndex] = intSample;
-                    left = false;
-                }
-                else
-                {
-                    wav.Right[sampleIndex] = intSample;
-                    left = true;
-                }
-                sampleIndex++;
+                wav.Left[j] = buffer[i];
+                wav.Right[j] = buffer[i+1];
             }
+            
+            
         }
 
         /// <summary>
