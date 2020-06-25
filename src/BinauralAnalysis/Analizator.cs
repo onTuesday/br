@@ -7,6 +7,7 @@ using NAudio;
 using NAudio.Wave;
 using Accord.Math;
 using System.Numerics;
+using AForge.Math;
 
 namespace BinauralAnalysis
 {
@@ -60,13 +61,14 @@ namespace BinauralAnalysis
                 fftComplex[i] = new Complex(data[i], 0.0);
             }
 
-            Accord.Math.FourierTransform.FFT(fftComplex, FourierTransform.Direction.Forward);
+            //Accord.Math.FourierTransform.FFT(fftComplex, FourierTransform.Direction.Forward);
+            Accord.Math.Transforms.FourierTransform2.FFT(fftComplex, FourierTransform.Direction.Forward);
 
-            for (int i = 0; i < data.Length / 2; i++)
+            for (int i = 0; i < data.Length / 2 ; i++)
             {
                 fft[i] = fftComplex[i].Magnitude;
             }
-
+           
             return fft;
         }
     }

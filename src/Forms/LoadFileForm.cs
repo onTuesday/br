@@ -44,36 +44,46 @@ namespace Forms
             Analizator.GetWaveData(ref this.wav);
 
             //Посекундное БПФ левой и правой дорожки
-            
+            FFT_bgWorker.RunWorkerAsync();
 
 
-            ////
-            ///Делаем кнопку результата активной
-            showResButton.Enabled = true;
-            showResButton.BackColor = Color.Red;
+ 
         }
 
         //Посекундное БПФ преобразование 
         private void FFT_bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            int secondCounter = 0;
-            for (int i = 0; i < wav.Length; i++)
+            wav.FFTleft = new double[wav.Length * wav.Samplerate / 2 + 1];
+            wav.FFTright = new double[wav.Length * wav.Samplerate / 2 + 1];
+            for (int i = 0, p = 0; i < wav.Length; i++, p++)
             {
-                
-                
+                double[] toFFTleft = SubArray(wav.Left, i * wav.Samplerate, wav.Samplerate);
+                double[] toFFTright = SubArray(wav.Right, i * wav.Samplerate, wav.Samplerate);
+                double[] resFFTleft = Analizator.FFT(toFFTleft);
+                double[] resFFTright = Analizator.FFT(toFFTright);
+                for (int j = 0; j < wav.Samplerate / 2; j++)
+                {
+                    wav.FFTleft[j] = resFFTleft[j];
+                    wav.FFTright[j] = resFFTright[j];
+                }
+                if (p >= wav.Length / 10)
+                {
+                    FFT_bgWorker.ReportProgress(p / 10);
+                }
             }
         }
 
         //Инкремент прогресс бара БПФ преобразования
         private void FFT_bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            
+            FFTProgressBar.Increment(1);
         }
 
         //Делаем кнопку показания результата активной
         private void FFT_bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.showResButton.Enabled = true;
+            
         }
 
         private void LoadFileForm_Load(object sender, EventArgs e)
@@ -129,5 +139,20 @@ namespace Forms
             this.convertToWavLabel.Enabled = false;
         }
 
+        private void FFTProgressBar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private double[] SubArray(double[] src ,int index, int length)
+        {
+            double[] tmp = new double[length];
+            int lastIndex = index + length;
+            for (int i = index, j = 0; i < lastIndex; i++, ++j)
+            {
+                tmp[j] = src[i];
+            }
+            return tmp;
+        }
     }
 }

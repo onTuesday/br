@@ -14,7 +14,8 @@ namespace BinauralAnalysis
         public string Name { get; set; }
         public double[] Left { get; set; }
         public double[] Right { get; set; }
-        public double[] FFTdata { get; set; }
+        public double[] FFTleft { get; set; }
+        public double[] FFTright { get; set; }
         public int Samplerate { get; set; }
         public int Length{ get; set; }
 
@@ -23,7 +24,8 @@ namespace BinauralAnalysis
             this.Name = name;
             this.Left = new double[1];
             this.Right = new double[1];
-            this.FFTdata = new double[1];
+            this.FFTleft = new double[1];
+            this.FFTright = new double[1];
             this.Samplerate = 0;
             this.Length = 0;
         }

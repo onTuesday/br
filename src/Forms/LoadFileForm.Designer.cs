@@ -61,6 +61,7 @@
             this.FFTProgressBar.Name = "FFTProgressBar";
             this.FFTProgressBar.Size = new System.Drawing.Size(229, 23);
             this.FFTProgressBar.TabIndex = 1;
+            this.FFTProgressBar.Click += new System.EventHandler(this.FFTProgressBar_Click);
             // 
             // convertToWavLabel
             // 
@@ -84,7 +85,7 @@
             // 
             // showResButton
             // 
-            this.showResButton.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.showResButton.BackColor = System.Drawing.SystemColors.Highlight;
             this.showResButton.Enabled = false;
             this.showResButton.Location = new System.Drawing.Point(14, 250);
             this.showResButton.Name = "showResButton";
@@ -107,6 +108,7 @@
             // 
             // FFT_bgWorker
             // 
+            this.FFT_bgWorker.WorkerReportsProgress = true;
             this.FFT_bgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.FFT_bgWorker_DoWork);
             this.FFT_bgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.FFT_bgWorker_ProgressChanged);
             this.FFT_bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.FFT_bgWorker_RunWorkerCompleted);
