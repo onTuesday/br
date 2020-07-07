@@ -22,13 +22,9 @@ namespace Forms
             this.wav = new WavFile();
             InitializeComponent();
             this.convertToWavLabel.Enabled = false;
+            this.showResButton.BackColor = Color.Gray;
         }
 
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void runButton_Click(object sender, EventArgs e)
         {
@@ -45,11 +41,71 @@ namespace Forms
 
             //Посекундное БПФ левой и правой дорожки
             FFT_bgWorker.RunWorkerAsync();
-
-
- 
         }
 
+        
+
+        private void LoadFileForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void showResButton_Click(object sender, EventArgs e)
+        {
+            ///Создание формы результата
+            ///
+            ResGraphick resForm = new ResGraphick(this.wav);
+            resForm.Show();
+        }
+
+
+        private void loadFileButton_Click(object sender, EventArgs e)
+        {
+            //Получение полного пути файла с помошью openFileDialog
+            openFileDialog.Filter = "wav files (*.wav)|*.wav|mp3 files (*.mp3)|*.mp3|mp4 files (*.mp4)|*.mp4|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Get the path of specified file
+                wav.Name = openFileDialog.FileName;
+                this.fileTextBox.Text = this.wav.Name;
+                this.type = (FileType)openFileDialog.FilterIndex;
+            }
+        }
+
+        #region ConverterBgworker
+        private void ConverterBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ConverterBackgroundWorker.ReportProgress(1);
+            //Конвертация файла в wav
+            switch (this.type)
+            {
+                case FileType.Mp3:
+                    BinauralAnalysis.Converter.Mp3ToWav(this.wav.Name, "tmpfile.wav");
+                    this.wav.Name = "tmpfile.wav";
+                    break;
+
+                case FileType.Mp4:
+                    //TODO Выделение аудиодорожки из mp4 файла
+                    break;
+            }
+        }
+
+
+        private void ConverterBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            
+        }
+
+        private void ConverterBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.convertToWavLabel.Enabled = false;
+        }
+        #endregion
+
+        #region FFTBgworker
         //Посекундное БПФ преобразование 
         private void FFT_bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -82,68 +138,18 @@ namespace Forms
         //Делаем кнопку показания результата активной
         private void FFT_bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.showResButton.BackColor = Color.LimeGreen;
             this.showResButton.Enabled = true;
-            
         }
+        #endregion
 
-        private void LoadFileForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void showResButton_Click(object sender, EventArgs e)
-        {
-            ///Создание формы результата
-            ///
-            ResultForm resForm = new ResultForm();
-            resForm.Show();
-        }
-
-
-        private void loadFileButton_Click(object sender, EventArgs e)
-        {
-            //Получение полного пути файла с помошью openFileDialog
-            openFileDialog.Filter = "wav files (*.wav)|*.wav|mp3 files (*.mp3)|*.mp3|mp4 files (*.mp4)|*.mp4|All files (*.*)|*.*";
-            openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                //Get the path of specified file
-                wav.Name = openFileDialog.FileName;
-                this.fileTextBox.Text = this.wav.Name;
-                this.type = (FileType)openFileDialog.FilterIndex;
-            }
-        }
-
-        private void ConverterBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            
-            //Конвертация файла в wav
-            switch (this.type)
-            {
-                case FileType.Mp3:
-                    BinauralAnalysis.Converter.Mp3ToWav(this.wav.Name, "tmpfile.wav");
-                    this.wav.Name = "tmpfile.wav";
-                    break;
-
-                case FileType.Mp4:
-                    //TODO Выделение аудиодорожки из mp4 файла
-                    break;
-            }
-        }
-
-
-        private void ConverterBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            this.convertToWavLabel.Enabled = false;
-        }
-
-        private void FFTProgressBar_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Возвращает подмассив заданного массива
+        /// </summary>
+        /// <param name="src">Исходный массив</param>
+        /// <param name="index">Начальный индекс</param>
+        /// <param name="length">Длина</param>
+        /// <returns></returns>
         private double[] SubArray(double[] src ,int index, int length)
         {
             double[] tmp = new double[length];
@@ -154,5 +160,8 @@ namespace Forms
             }
             return tmp;
         }
+
+
+
     }
 }

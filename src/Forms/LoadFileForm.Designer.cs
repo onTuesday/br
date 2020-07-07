@@ -61,7 +61,6 @@
             this.FFTProgressBar.Name = "FFTProgressBar";
             this.FFTProgressBar.Size = new System.Drawing.Size(229, 23);
             this.FFTProgressBar.TabIndex = 1;
-            this.FFTProgressBar.Click += new System.EventHandler(this.FFTProgressBar_Click);
             // 
             // convertToWavLabel
             // 
@@ -151,6 +150,7 @@
             // 
             this.ConverterBackgroundWorker.WorkerReportsProgress = true;
             this.ConverterBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ConverterBackgroundWorker_DoWork);
+            this.ConverterBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ConverterBackgroundWorker_ProgressChanged);
             this.ConverterBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ConverterBackgroundWorker_RunWorkerCompleted);
             // 
             // LoadFileForm
