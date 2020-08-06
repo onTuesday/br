@@ -23,6 +23,7 @@ namespace Forms
             InitializeComponent();
             this.convertToWavLabel.Enabled = false;
             this.showResButton.BackColor = Color.Gray;
+            
         }
 
 
@@ -109,9 +110,10 @@ namespace Forms
         //Посекундное БПФ преобразование 
         private void FFT_bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            int progressCount = (wav.Samplerate * wav.Length) / 10;
             wav.FFTleft = new double[wav.Length * wav.Samplerate / 2 + 1];
             wav.FFTright = new double[wav.Length * wav.Samplerate / 2 + 1];
-            for (int i = 0, p = 0; i < wav.Length; i++, p++)
+            for (int i = 0, p = 0; i < wav.Length; i++, p+=wav.Samplerate)
             {
                 double[] toFFTleft = SubArray(wav.Left, i * wav.Samplerate, wav.Samplerate);
                 double[] toFFTright = SubArray(wav.Right, i * wav.Samplerate, wav.Samplerate);
@@ -122,17 +124,19 @@ namespace Forms
                     wav.FFTleft[j] = resFFTleft[j];
                     wav.FFTright[j] = resFFTright[j];
                 }
-                if (p >= wav.Length / 10)
+                if (p >= progressCount)
                 {
-                    FFT_bgWorker.ReportProgress(p / 10);
+                    FFT_bgWorker.ReportProgress(9);
+                    p = 0;
                 }
             }
+            FFT_bgWorker.ReportProgress(1);
         }
 
         //Инкремент прогресс бара БПФ преобразования
         private void FFT_bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            FFTProgressBar.Increment(1);
+            FFTProgressBar.Increment(10);
         }
 
         //Делаем кнопку показания результата активной
