@@ -21,7 +21,6 @@ namespace Forms
         {
             this.wav = new WavFile();
             InitializeComponent();
-            this.convertToWavLabel.Enabled = false;
             this.showResButton.BackColor = Color.Gray;
             
         }
@@ -33,7 +32,6 @@ namespace Forms
             //Конвертация файла в wav(если требуется)
             if (this.type == FileType.Mp3 || this.type == FileType.Mp4)
             {
-                this.convertToWavLabel.Enabled = true;
                 ConverterBackgroundWorker.RunWorkerAsync();
             }
 
@@ -97,12 +95,10 @@ namespace Forms
 
         private void ConverterBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            
         }
 
         private void ConverterBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.convertToWavLabel.Enabled = false;
         }
         #endregion
 

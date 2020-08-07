@@ -30,7 +30,6 @@
         {
             this.resLabel = new System.Windows.Forms.Label();
             this.FFTProgressBar = new System.Windows.Forms.ProgressBar();
-            this.convertToWavLabel = new System.Windows.Forms.Label();
             this.FFTLabel = new System.Windows.Forms.Label();
             this.showResButton = new System.Windows.Forms.Button();
             this.runButton = new System.Windows.Forms.Button();
@@ -61,17 +60,6 @@
             this.FFTProgressBar.Name = "FFTProgressBar";
             this.FFTProgressBar.Size = new System.Drawing.Size(229, 23);
             this.FFTProgressBar.TabIndex = 1;
-            // 
-            // convertToWavLabel
-            // 
-            this.convertToWavLabel.AutoSize = true;
-            this.convertToWavLabel.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.convertToWavLabel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.convertToWavLabel.Location = new System.Drawing.Point(27, 126);
-            this.convertToWavLabel.Name = "convertToWavLabel";
-            this.convertToWavLabel.Size = new System.Drawing.Size(105, 13);
-            this.convertToWavLabel.TabIndex = 3;
-            this.convertToWavLabel.Text = "Конвертация в wav";
             // 
             // FFTLabel
             // 
@@ -164,7 +152,6 @@
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.showResButton);
             this.Controls.Add(this.FFTLabel);
-            this.Controls.Add(this.convertToWavLabel);
             this.Controls.Add(this.resLabel);
             this.Controls.Add(this.FFTProgressBar);
             this.Name = "LoadFileForm";
@@ -178,7 +165,6 @@
         #endregion
         private System.Windows.Forms.Label resLabel;
         private System.Windows.Forms.ProgressBar FFTProgressBar;
-        private System.Windows.Forms.Label convertToWavLabel;
         private System.Windows.Forms.Label FFTLabel;
         private System.Windows.Forms.Button showResButton;
         private System.Windows.Forms.Button runButton;
