@@ -113,9 +113,9 @@ namespace Forms
             {
                 double[] toFFTleft = SubArray(wav.Left, i * wav.Samplerate, wav.Samplerate);
                 double[] toFFTright = SubArray(wav.Right, i * wav.Samplerate, wav.Samplerate);
-                double[] resFFTleft = Analizator.FFT(toFFTleft);
-                double[] resFFTright = Analizator.FFT(toFFTright);
-                for (int j = 0; j < wav.Samplerate / 2; j++)
+                double[] resFFTleft = SubArray(Analizator.FFT(toFFTleft),0, wav.Samplerate / 2);
+                double[] resFFTright = SubArray(Analizator.FFT(toFFTright), 0, wav.Samplerate / 2);
+                for (int j = (wav.Samplerate / 2) * i; j < (wav.Samplerate / 2) * (i + 1); j++)
                 {
                     wav.FFTleft[j] = resFFTleft[j];
                     wav.FFTright[j] = resFFTright[j];
@@ -125,6 +125,7 @@ namespace Forms
                     FFT_bgWorker.ReportProgress(9);
                     p = 0;
                 }
+                
             }
             FFT_bgWorker.ReportProgress(1);
         }
