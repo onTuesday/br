@@ -41,6 +41,8 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.fileTextBox = new System.Windows.Forms.TextBox();
             this.ConverterBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.leftFFTbgWorker = new System.ComponentModel.BackgroundWorker();
+            this.rightFFTbgWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // resLabel
@@ -50,9 +52,9 @@
             this.resLabel.Location = new System.Drawing.Point(9, 9);
             this.resLabel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.resLabel.Name = "resLabel";
-            this.resLabel.Size = new System.Drawing.Size(384, 31);
+            this.resLabel.Size = new System.Drawing.Size(553, 31);
             this.resLabel.TabIndex = 0;
-            this.resLabel.Text = "Результат обработки";
+            this.resLabel.Text = "Проверка аудиофайла на бинауральные ритмы";
             // 
             // FFTProgressBar
             // 
@@ -64,7 +66,7 @@
             // FFTLabel
             // 
             this.FFTLabel.AutoSize = true;
-            this.FFTLabel.Location = new System.Drawing.Point(27, 185);
+            this.FFTLabel.Location = new System.Drawing.Point(12, 175);
             this.FFTLabel.Name = "FFTLabel";
             this.FFTLabel.Size = new System.Drawing.Size(72, 13);
             this.FFTLabel.TabIndex = 4;
@@ -72,7 +74,7 @@
             // 
             // showResButton
             // 
-            this.showResButton.BackColor = System.Drawing.SystemColors.Highlight;
+            this.showResButton.BackColor = System.Drawing.Color.Gray;
             this.showResButton.Enabled = false;
             this.showResButton.Location = new System.Drawing.Point(14, 250);
             this.showResButton.Name = "showResButton";
@@ -117,7 +119,7 @@
             // loadFileLabel
             // 
             this.loadFileLabel.AutoSize = true;
-            this.loadFileLabel.Location = new System.Drawing.Point(27, 76);
+            this.loadFileLabel.Location = new System.Drawing.Point(12, 71);
             this.loadFileLabel.Name = "loadFileLabel";
             this.loadFileLabel.Size = new System.Drawing.Size(88, 13);
             this.loadFileLabel.TabIndex = 8;
@@ -138,8 +140,21 @@
             // 
             this.ConverterBackgroundWorker.WorkerReportsProgress = true;
             this.ConverterBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ConverterBackgroundWorker_DoWork);
-            this.ConverterBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ConverterBackgroundWorker_ProgressChanged);
-            this.ConverterBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ConverterBackgroundWorker_RunWorkerCompleted);
+            // 
+            // leftFFTbgWorker
+            // 
+            this.leftFFTbgWorker.WorkerReportsProgress = true;
+            this.leftFFTbgWorker.WorkerSupportsCancellation = true;
+            this.leftFFTbgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.leftFFTbgWorker_DoWork);
+            this.leftFFTbgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.leftFFTbgWorker_ProgressChanged);
+            this.leftFFTbgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.leftFFTbgWorker_RunWorkerCompleted);
+            // 
+            // rightFFTbgWorker
+            // 
+            this.rightFFTbgWorker.WorkerReportsProgress = true;
+            this.rightFFTbgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.rightFFTbgWorker_DoWork);
+            this.rightFFTbgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.rightFFTbgWorker_ProgressChanged);
+            this.rightFFTbgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.rightFFTbgWorker_RunWorkerCompleted);
             // 
             // LoadFileForm
             // 
@@ -155,8 +170,8 @@
             this.Controls.Add(this.resLabel);
             this.Controls.Add(this.FFTProgressBar);
             this.Name = "LoadFileForm";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.LoadFileForm_Load);
+            this.Text = "Проверка аудиосигнала";
+            this.VisibleChanged += new System.EventHandler(this.LoadFileForm_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -176,5 +191,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TextBox fileTextBox;
         private System.ComponentModel.BackgroundWorker ConverterBackgroundWorker;
+        private System.ComponentModel.BackgroundWorker leftFFTbgWorker;
+        private System.ComponentModel.BackgroundWorker rightFFTbgWorker;
     }
 }
