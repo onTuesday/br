@@ -34,14 +34,23 @@ namespace Forms
         private void runButton_Click(object sender, EventArgs e)
         {
             runButton.Enabled = false;
-            //Конвертация файла в wav(если требуется)
-            if (this.type == FileType.Mp3 || this.type == FileType.Mp4)
+            try
             {
-                ConverterBackgroundWorker.RunWorkerAsync();
-            }
+                //Конвертация файла в wav(если требуется)
+                if (this.type == FileType.Mp3 || this.type == FileType.Mp4)
+                {
+                    ConverterBackgroundWorker.RunWorkerAsync();
+                }
 
-            //Заполнение структуры wav файла данными 
-            Analizator.GetWaveData(ref this.wav);
+                //Заполнение структуры wav файла данными 
+                Analizator.GetWaveData(ref this.wav);
+            }
+            catch( Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+                runButton.Enabled = true;
+                return;
+            }
 
             //Посекундное БПФ левой и правой дорожки
             //FFT_bgWorker.RunWorkerAsync();
