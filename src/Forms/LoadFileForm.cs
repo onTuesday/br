@@ -149,10 +149,10 @@ namespace Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FFT_bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            FFTProgressBar.Increment(10);
-        }
+        //private void FFT_bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        //{
+        //    FFTProgressBar.Increment(10);
+        //}
 
         /// <summary>
         /// Делает кнопку результата активной
@@ -198,6 +198,7 @@ namespace Forms
             this.runButton.Enabled = true;
             this.FFTProgressBar.Value = 0;
         }
+
         #region leftFFT
         private void leftFFTbgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -220,7 +221,7 @@ namespace Forms
                     p = 0;
                 }
             }
-            this.FFT_bgWorker.ReportProgress(1);
+            this.leftFFTbgWorker.ReportProgress(1);
         }
 
         private void leftFFTbgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -258,7 +259,7 @@ namespace Forms
             }
             while (!this.leftChannelCompleted)
                 System.Threading.Thread.Sleep(50);
-            this.FFT_bgWorker.ReportProgress(1);
+            this.rightFFTbgWorker.ReportProgress(1);
         }
 
         private void rightFFTbgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
