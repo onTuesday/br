@@ -25,12 +25,8 @@ namespace Forms
             InitializeComponent();
         }
 
-        /// <summary>
         /// Конвертация файла в wav, если она нужна, запуск БПФ обработки файла.
         /// При завершении обработки кнопка результата становиться активной.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void runButton_Click(object sender, EventArgs e)
         {
             runButton.Enabled = false;
@@ -58,11 +54,7 @@ namespace Forms
             rightFFTbgWorker.RunWorkerAsync();
         }
         
-        /// <summary>
         /// Создаёт и показывает форму результата, скрывает данную форму.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void showResButton_Click(object sender, EventArgs e)
         {
             ///Создание формы результата
@@ -72,11 +64,7 @@ namespace Forms
             resForm.Show();
         }
 
-        /// <summary>
         /// Открывает OpenFileDialog для выбора файла для обработки.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void loadFileButton_Click(object sender, EventArgs e)
         {
             //Получение полного пути файла с помошью openFileDialog
@@ -94,11 +82,7 @@ namespace Forms
         }
 
         #region ConverterBgworker
-        /// <summary>
         /// Производит конвертацию файла в wav в отдельном потоке
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ConverterBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             ConverterBackgroundWorker.ReportProgress(1);
@@ -117,71 +101,10 @@ namespace Forms
         }
         #endregion
 
-        #region FFTBgworker
-        /// <summary>
-        /// Выполняет Посекундное БПФ преобразование левой и правой дорожки, записывает результат в wav структуру
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FFT_bgWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
+ 
 
-            //Определяем размер массива для бпф преобразования
-            wav.FFTleft = new double[(wav.Length + 1) * wav.Samplerate / 2 ];
-            wav.FFTright = new double[(wav.Length + 1) * wav.Samplerate / 2 ];
-            int progressDelta = wav.Samplerate * wav.Length / 10;
 
-            //Посекундное БПФ преобразование и запись результата
-            for (int i = 0, p = 0; i < wav.Length; i++, p += wav.Samplerate)
-            {
-                double[] toFFTleft = SubArray(wav.Left, i * wav.Samplerate, wav.Samplerate);
-                double[] toFFTright = SubArray(wav.Right, i * wav.Samplerate, wav.Samplerate);
-                double[] resFFTleft = SubArray(Analizator.FFT(toFFTleft), 0, wav.Samplerate / 2);
-                double[] resFFTright = SubArray(Analizator.FFT(toFFTright), 0, wav.Samplerate / 2);
-                int fftSampleIndex = (wav.Samplerate * i) / 2; 
-                for (int j = 0; j < wav.Samplerate / 2; j++)
-                {
-                    wav.FFTleft[fftSampleIndex + j] = resFFTleft[j];
-                    wav.FFTright[fftSampleIndex + j] = resFFTright[j];
-                }
-                if (p >= progressDelta)
-                {
-                    this.FFT_bgWorker.ReportProgress(1);
-                    p = 0;
-                }
-            }
-            this.FFT_bgWorker.ReportProgress(1);
-        }
-
-        /// <summary>
-        /// Увеличивает счётчик прогресс бара на 10
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void FFT_bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-        //    FFTProgressBar.Increment(10);
-        //}
-
-        /// <summary>
-        /// Делает кнопку результата активной
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FFT_bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            this.showResButton.BackColor = SystemColors.Highlight;
-            this.showResButton.Enabled = true;
-        }
-        #endregion
-
-        /// <summary>
         /// Возвращает подмассив заданного массива
-        /// </summary>
-        /// <param name="src">Исходный массив</param>
-        /// <param name="index">Начальный индекс</param>
-        /// <param name="length">Длина</param>
-        /// <returns></returns>
         private double[] SubArray(double[] src ,int index, int length)
         {
             double[] tmp = new double[length];
@@ -193,11 +116,7 @@ namespace Forms
             return tmp;
         }
 
-        /// <summary>
         /// При скрывании окна сбрасывает все параметры данного окна до исходных.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void LoadFileForm_VisibleChanged(object sender, EventArgs e)
         {
             this.wav = new WavFile();
@@ -211,7 +130,7 @@ namespace Forms
         #region leftFFT
         private void leftFFTbgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            wav.FFTleft = new double[(wav.Length + 1) * wav.Samplerate / 2];
+            wav.FFTleft = new double[(wav.Length + 1) * wav.Samplerate / 2 + 100];
             int progressDelta = wav.Samplerate * wav.Length / 10;
 
             //Посекундное БПФ преобразование и запись результата
@@ -247,7 +166,7 @@ namespace Forms
 
         private void rightFFTbgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            wav.FFTright = new double[(wav.Length + 1) * wav.Samplerate / 2];
+            wav.FFTright = new double[(wav.Length + 1) * wav.Samplerate / 2 + 50];
             int progressDelta = wav.Samplerate * wav.Length / 10;
 
             //Посекундное БПФ преобразование и запись результата

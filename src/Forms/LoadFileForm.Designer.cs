@@ -98,8 +98,6 @@
             // FFT_bgWorker
             // 
             this.FFT_bgWorker.WorkerReportsProgress = true;
-            this.FFT_bgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.FFT_bgWorker_DoWork);
-            this.FFT_bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.FFT_bgWorker_RunWorkerCompleted);
             // 
             // openFileDialog1
             // 
